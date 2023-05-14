@@ -1,0 +1,23 @@
+Modèle de la doc CNN : 
+A la 2ème epoch : 100% accuracy pour train et val
+Nombre epochs : 6
+Temps : 2min20s
+Accuracy test : 78.8%
+
+Modèle de la doc amélioré : 
+Au 3ème epoch : 100% accuracy pour train et 4ème epoch 100% accuracy pour val
+Nombre epochs : 6
+Temps : 3min25s
+Accuracy test : 81.76%
+
+Modèle maison : 
+A la 14ème epoch : 100% d'accuracy pour val, jamais pour train. (grâce au learning rate)
+Nombre epochs : 20
+Temps : 4min50s
+Accuracy test : 100%
+
+Modèle trouvé : 
+A la 10ème epoch : 100% d'accuracy pour val, puis au 13eme, puis 19 et 20, jamais pour train. (grâce au learning rate)
+Nombre epochs : 20
+Temps : 8min50s
+Accuracy test : 99.83%

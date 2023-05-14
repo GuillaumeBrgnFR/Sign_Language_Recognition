@@ -1,0 +1,87 @@
+
+
+
+Question : 
+datagen = ImageDataGenerator(
+        featurewise_center=False,  # set input mean to 0 over the dataset
+        samplewise_center=False,  # set each sample mean to 0
+        featurewise_std_normalization=False,  # divide inputs by std of the dataset
+        samplewise_std_normalization=False,  # divide each input by its std
+        zca_whitening=False,  # apply ZCA whitening
+        rotation_range=10,  # randomly rotate images in the range (degrees, 0 to 180)
+        zoom_range = 0.1, # Randomly zoom image 
+        width_shift_range=0.1,  # randomly shift images horizontally (fraction of total width)
+        height_shift_range=0.1,  # randomly shift images vertically (fraction of total height)
+        horizontal_flip=False,  # randomly flip images
+        vertical_flip=False)  # randomly flip images
+
+Réponse : 
+Ces lignes de code montrent la création d'un objet ImageDataGenerator en utilisant la bibliothèque Keras pour préparer des images pour un modèle de réseau de neurones à convolutions (CNN).
+Chaque argument de l'objet ImageDataGenerator spécifie une transformation à appliquer aux images pendant la phase de pré-traitement. Voici une explication de chaque argument :
+featurewise_center: Si True, l'entrée est centrée sur 0 par rapport à la moyenne de toutes les images. Dans ce cas, la moyenne de tous les pixels des images est soustraite à chaque pixel de l'image.
+samplewise_center: Si True, chaque image est centrée sur 0 par rapport à sa propre moyenne. Dans ce cas, la moyenne de chaque image est soustraite à chaque pixel de l'image.
+featurewise_std_normalization: Si True, l'entrée est normalisée par la division par l'écart-type de toutes les images. Dans ce cas, chaque pixel de chaque image est divisé par l'écart-type de tous les pixels des images.
+samplewise_std_normalization: Si True, chaque image est normalisée par la division par son propre écart-type. Dans ce cas, chaque pixel de chaque image est divisé par l'écart-type de chaque image.
+zca_whitening: Si True, une technique de blanchiment ZCA est appliquée aux images. Cette technique est utilisée pour réduire la corrélation entre les pixels de l'image.
+rotation_range: Rotation aléatoire des images dans la plage donnée en degrés. Dans cet exemple, les images peuvent être tournées de 10 degrés maximum.
+zoom_range: Zoom aléatoire de l'image. Dans cet exemple, les images peuvent être zoomées de 0,1 fois leur taille originale.
+width_shift_range: Décalage aléatoire horizontal des images. Dans cet exemple, les images peuvent être décalées horizontalement d'un maximum de 0,1 fois leur largeur totale.
+height_shift_range: Décalage aléatoire vertical des images. Dans cet exemple, les images peuvent être décalées verticalement d'un maximum de 0,1 fois leur hauteur totale.
+horizontal_flip: Retournement horizontal aléatoire des images.
+vertical_flip: Retournement vertical aléatoire des images.
+En somme, ces paramètres permettent de diversifier les images d'entraînement et de créer une plus grande variété d'images pour améliorer la robustesse du modèle et sa capacité à généraliser à de nouvelles images.
+
+
+Question : 
+learning_rate_reduction = ReduceLROnPlateau(monitor='val_accuracy', patience = 2, verbose=1,factor=0.5, min_lr=0.00001)
+
+Réponse : 
+Cette ligne de code crée un objet ReduceLROnPlateau en utilisant la bibliothèque Keras pour ajuster dynamiquement le taux d'apprentissage (learning rate) du modèle pendant l'entraînement. Le taux d'apprentissage est un hyperparamètre important dans l'entraînement des réseaux de neurones qui contrôle la taille de la mise à jour des poids à chaque itération.
+Voici une explication des arguments de ReduceLROnPlateau :
+monitor: le nom de la métrique à surveiller pendant l'entraînement pour décider si le taux d'apprentissage doit être réduit. Dans ce cas, la métrique surveillée est la précision (accuracy) sur l'ensemble de validation (val_accuracy).
+patience: le nombre d'époques sans amélioration de la métrique monitor après quoi le taux d'apprentissage est réduit. Dans ce cas, si la précision de l'ensemble de validation ne s'améliore pas pendant 2 époques, le taux d'apprentissage est réduit.
+verbose: le niveau de détails des messages affichés pendant l'entraînement. Dans ce cas, le niveau de détails est défini sur 1 pour afficher les messages d'information.
+factor: le facteur de réduction du taux d'apprentissage. Dans ce cas, le taux d'apprentissage est réduit de moitié (facteur de 0,5) lorsqu'il est déclenché.
+min_lr: le taux d'apprentissage minimal autorisé. Dans ce cas, le taux d'apprentissage ne peut pas être inférieur à 0,00001.
+En somme, cette ligne de code permet de contrôler dynamiquement le taux d'apprentissage du modèle pendant l'entraînement en le réduisant automatiquement si la précision sur l'ensemble de validation ne s'améliore pas pendant un certain nombre d'époques consécutives. Cette technique aide à éviter que le modèle ne soit coincé dans un minimum local et à améliorer les performances du modèle en termes de précision.
+
+
+
+Question : 
+# Model
+model = Sequential()
+
+model.add(Conv2D(75 , (3,3) , strides = 1 , padding = 'same' , activation = 'relu' , input_shape = (28,28,1)))
+model.add(BatchNormalization())
+
+model.add(MaxPool2D((2,2) , strides = 2 , padding = 'same'))
+
+model.add(Conv2D(50 , (3,3) , strides = 1 , padding = 'same' , activation = 'relu'))
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+
+model.add(MaxPool2D((2,2) , strides = 2 , padding = 'same'))
+
+model.add(Conv2D(25 , (3,3) , strides = 1 , padding = 'same' , activation = 'relu'))
+model.add(BatchNormalization())
+
+model.add(MaxPool2D((2,2) , strides = 2 , padding = 'same'))
+
+model.add(Flatten())
+
+model.add(Dense(units = 512 , activation = 'relu'))
+model.add(Dropout(0.3))
+
+model.add(Dense(units = 24 , activation = 'softmax'))
+
+
+Réponse : 
+Ces lignes de code créent une architecture de réseau de neurones à convolution (CNN) pour la classification d'images en utilisant la bibliothèque Keras.
+Le modèle commence par une couche d'entrée Conv2D qui applique 75 filtres de convolution de taille 3x3 à l'image en entrée. Cette couche utilise une fonction d'activation ReLU pour introduire de la non-linéarité dans le modèle. La couche est suivie d'une normalisation de batch BatchNormalization pour normaliser les sorties de la couche précédente.
+La sortie de la première couche est ensuite envoyée à une couche de max-pooling MaxPool2D qui réduit la taille spatiale de la sortie de la couche précédente de moitié.
+La deuxième couche Conv2D utilise 50 filtres de convolution de taille 3x3, suivie d'une couche Dropout pour régulariser le modèle et éviter le sur-apprentissage (overfitting), puis une normalisation de batch BatchNormalization.
+La sortie de la deuxième couche est de nouveau envoyée à une couche de max-pooling MaxPool2D pour réduire encore la taille spatiale de la sortie.
+La troisième et dernière couche Conv2D utilise 25 filtres de convolution de taille 3x3, suivie d'une normalisation de batch BatchNormalization. Encore une fois, la sortie est envoyée à une couche de max-pooling MaxPool2D pour réduire la taille spatiale de la sortie.
+La sortie de la dernière couche de max-pooling est aplatie (Flatten) pour produire un vecteur unidimensionnel de caractéristiques.
+Le vecteur de caractéristiques est ensuite envoyé à une couche dense (Dense) de 512 neurones avec une fonction d'activation ReLU, suivie d'une couche Dropout pour régulariser le modèle. Enfin, la sortie de cette couche est envoyée à une couche dense de 24 neurones avec une fonction d'activation softmax pour produire une probabilité pour chaque classe de sortie.
+En somme, cette architecture de CNN comporte plusieurs couches de convolution et de max-pooling, suivies de couches denses pour la classification finale. Le dropout et la normalisation de batch sont utilisés pour améliorer les performances et éviter le sur-apprentissage.
